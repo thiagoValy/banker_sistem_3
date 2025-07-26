@@ -1,9 +1,9 @@
 # banker_sistem_3
-# 💰 Sistema Bancário em Python
+ Sistema Bancário em Python
 
 Este projeto é um **sistema bancário simples**, desenvolvido em Python, que simula operações bancárias como criação de usuários, contas, depósitos, saques e exibição de extratos.
 
-## 📋 Funcionalidades
+ Funcionalidades
 
 - Criar usuários (Pessoa Física)
 - Criar contas bancárias (Conta Corrente)
@@ -12,7 +12,7 @@ Este projeto é um **sistema bancário simples**, desenvolvido em Python, que si
 - Limites de saque diários configuráveis
 - Histórico completo das transações realizadas
 
-## 🛠️ Tecnologias utilizadas
+Tecnologias utilizadas
 
 - Python 3.x
 - Programação orientada a objetos (POO)
@@ -20,7 +20,7 @@ Este projeto é um **sistema bancário simples**, desenvolvido em Python, que si
 - Módulo `datetime` para registrar data/hora das transações
 - `textwrap` (para formatação de texto no terminal)
 
-## 📁 Estrutura do Código
+ Estrutura do Código
 
 - `Cliente`: Classe base para representar um cliente genérico.
 - `PessoaFisica`: Herda de `Cliente`, representa um usuário com CPF.
@@ -30,7 +30,8 @@ Este projeto é um **sistema bancário simples**, desenvolvido em Python, que si
 - `Saque` e `Deposito`: Herdam de `Transacao` e implementam a lógica de cada operação.
 - `Historico`: Armazena o histórico de transações por conta.
 
-## ▶️ Como executar
+
+Como executar
 
 1. Certifique-se de ter o Python 3 instalado:
     ```bash
@@ -62,7 +63,7 @@ Este projeto é um **sistema bancário simples**, desenvolvido em Python, que si
     ========================
     ```
 
-## ⚠️ Observações
+ Observações
 
 - Cada usuário pode ter múltiplas contas.
 - O limite padrão de saque é de R$ 500, com 3 saques por dia.
@@ -70,7 +71,7 @@ Este projeto é um **sistema bancário simples**, desenvolvido em Python, que si
 
 
 
-## 👨‍💻 Autor
+Autor
 
 Desenvolvido por Thiago Pereira do Vale  
 📧 Email: [thiagovallyfinances@outlook.com](mailto:thiagovallyfinances@outlook.com)  
