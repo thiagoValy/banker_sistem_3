@@ -68,12 +68,7 @@ Este projeto é um **sistema bancário simples**, desenvolvido em Python, que si
 - O limite padrão de saque é de R$ 500, com 3 saques por dia.
 - O sistema não salva os dados entre execuções (sem persistência em arquivo ou banco de dados).
 
-## 🚀 Próximos passos (melhorias sugeridas)
 
-- Adicionar persistência de dados (JSON ou SQLite)
-- Interface gráfica (GUI com Tkinter ou Web com Flask/Django)
-- Implementar autenticação de usuários
-- Geração de relatórios em PDF ou Excel
 
 ## 👨‍💻 Autor
 
