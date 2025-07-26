@@ -1,6 +1,15 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
+import textwrap
 
+usuarios = []
+contas = []
+AGENCIA = "0001"
+saldo = 0
+extrato = ""
+limite = 500
+numero_saques = 0
+LIMITE_SAQUES = 3
 class Cliente:
     def __init__(self, endereco):
         self.endereco = endereco
@@ -188,16 +197,32 @@ def menu(lista):
     return opc
 
 def exibir_extrato(saldo, /, *, extrato):
-    print(f"========== EXTRATO ============" )
-    for moviento in extrato:
-        print(moviento)
-    print(f"Saldo Total ********* R$ {saldo}")
-
-def recuperar_conta_usuario(clientes):
-    if not cliente.conta:
+    cpf = input("Informe o CPF do Usuario: ")
+    usuario = filtrar_usuario(cpf, usuario)
+    
+    if not usuario:
         print("Cliente não encontrado")
         return
+    conta = recuperar_conta_usuario(usuario)
+    if not conta:
+        return
+    print("============= Extrato ==============")
+    transacao = conta.historico.transacoes
+    extrato = ""
+    if not transacao:
+        extrato = "não Foram realizadoas movimentações"
+    else:
+        for transacao in transacao:
+            extrato += f"{transacao['tipo']}"
+    print(extrato)
+    print(f"{saldo:}")
+    print("=========================")
 
+def recuperar_conta_usuario(usuario):
+    if not Cliente.contas:
+        print("Cliente não possue conta")
+
+        return Cliente.contas[0]
 def depositar(clientes):
     cpf = input("Dgite o CPF do Cliente: ")
     cliente = filtrar_usuario(cpf, clientes)
@@ -216,71 +241,66 @@ def depositar(clientes):
     cliente.realizar_transacao(conta, transacao)
 
 def saque():
-    excedeu_saldo = valor > saldo
-    execedeu_limite = valor > limite
-    excedeu_saques = numero_saques > limite_saques
+   cpf = input("Digite o CPF do Cliente")
+   usuario = filtrar_usuario(cpf, usuario)
 
-    if excedeu_saldo:
-        print("saldo insuficiente!!")
-    elif execedeu_limite:
-        print("Operação invalida você excedeu o limite de valor!!!")
+   if not usuario:
+       print("Cliente não encontrado")
+       return
+   
+   valor = float(input("Quanto Deseja Sacar: "))
+   Transacao = Saque(valor)
 
-    elif excedeu_saques:
-        print("Excedeu o limite total de saques!!")
-
-    elif valor > 0:
-        saldo -= valor
-        extrato.append(f"Saque ********** R$ {valor}")
-        print("Saque realizado com sucesso")
-    
-    else:
-        print("Operação invalida!! Digite um valor valido!!!")
-
-    return saldo, extrato
-
+   conta = recuperar_conta_usuario(usuario)
+   if not conta:
+       return
+   usuario.realizar_transacao(conta,Transacao)
 
 
 def filtrar_usuario(cpf, usuarios):
         usuarios_filtrados = [usuario for usuario in usuarios if usuario.cpf == cpf]
         return usuarios_filtrados[0] if usuarios_filtrados else None
 
+def criar_conta(usuario):
+    cpf = input("Informe seu CPF (somente números): ")
+    usuario = filtrar_usuario(cpf, usuarios)
+
+    if not usuario:
+        print("Cliente não encontrado")
+        return
+    
+    conta = ContaCorrente.nova_conta(cliente=usuario, numero=numero_conta)
+    contas.append(conta)
+    usuario.contas.append(conta)
+
+    print("Conta criada com Sucesso!!!")
 
 def criar_usuario(usuarios):
-    cpf = input("Informe seu CPF(somente numero): ")
+    cpf = input("Informe seu CPF (somente números): ")
     usuario = filtrar_usuario(cpf, usuarios)
 
     if usuario:
-        print("Já existe usuario com esse CPF")
+        print("Já existe usuário com esse CPF")
         return
-    
+
     nome = input("Informe o nome completo: ")
-    data_nascimento = input("Informe a data de nascimento (dd - mm - aaaa:  ")
-    endereço = input("Informe seu Endereço(Logradouro, Nº - Bairro - Cidade): ")
+    data_nascimento = input("Informe a data de nascimento (dd-mm-aaaa): ")
+    endereco = input("Informe seu Endereço (Logradouro, Nº - Bairro - Cidade): ")
 
-    usuarios.append({"nome": nome, "data_nascimento": data_nascimento, "cpf": cpf})
+    usuario = PessoaFisica(nome=nome, data_nas=data_nascimento, cpf=cpf, endereco=endereco)
 
-    print("Usuaro Criado com Sucesso!!!!")
-
-def criar_conta(agencia, numero_conta, usuarios):
-    cpf = input("informe o CPF do usuário: ")
-    usuario = filtrar_usuario(cpf, usuarios)
+    usuarios.append(usuario)
+    print("Usuário criado com sucesso!")
     
     if usuario:
         print("Conta Criada com Sucesso!!!")
-        return {"agencia": agencia, "numero_conta": numero_conta, "usuario": usuario}
+        return {"agencia": AGENCIA, "numero_conta": numero_conta, "usuario": usuario}
     print("Usuário não encontrado, criação de conta encerrado")
 
 def listar_contas(contas):
-    for conta in contas:
-        linha = f"""\ 
-        Agencia: {conta['agencia']}
-        C/C: {conta['numero_conta']}
-        Titular: {conta['usuario']['nome']}
-    """
-        
-        print("=" * 42)
-        print(linha)
-
+  for conta in contas:
+      print("=" * 42)
+      print(textwrap.dedetn(str(conta)))
 
 while True:
     resposta = menu(["ExTRATO", "DEPÓSITO", "SAQUE", "CRIAR USUARIO", "CRIAR CONTA", "LISTAR CONTAS", "SAIR"])
@@ -290,7 +310,7 @@ while True:
 
     elif resposta == 2:
         valor = float(input("Digite o valor a ser depositado: R$ "))
-        saldo, extrato = depositar(saldo, valor, extrato)
+        saldo, extrato = depositar(usuarios)
 
     elif resposta == 3:
         valor = float(input("Qual o valor do saque: R$ "))
